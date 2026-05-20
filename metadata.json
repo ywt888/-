@@ -1,0 +1,6 @@
+{
+  "name": "设计师与创始人个人作品集",
+  "description": "一个极简主义、AI 原生的创始人与产品设计师个人作品集。受 Vercel, Linear, Levels.com 启发，集极致排版、瑞士网格及系统化核心思考于一体。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
