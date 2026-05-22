@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Project, ShowcaseSection } from '../types';
-import ShowcaseArtifact from './ShowcaseArtifact';
-import ImageViewer from './ImageViewer';
+import ShowcaseArtifact from './showcase/ShowcaseArtifact';
+import ImageViewer from './showcase/ImageViewer';
 import { ArrowLeft, ZoomIn, Info, Check, ShieldCheck, Heart, Terminal } from 'lucide-react';
-import SodaShowcase from './SodaShowcase';
-import DouyinShowcase from './DouyinShowcase';
+import SodaShowcase from './showcase/SodaShowcase';
+import DouyinShowcase from './showcase/DouyinShowcase';
 
 interface ProjectDetailProps {
   project: Project;
