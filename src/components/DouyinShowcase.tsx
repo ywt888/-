@@ -799,12 +799,6 @@ export default function DouyinShowcase() {
         {/* Gallery filtering and stats section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-neutral-900 pb-6">
           <div className="space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs text-[#fe2c55] tracking-widest font-bold uppercase">PANORAMA SHOTS // 成果全图集</span>
-              <span className="font-mono text-[10px] text-neutral-400 bg-neutral-900 border border-neutral-800 px-2 py-0.5 rounded-full">
-                {filteredPages.length} 卡片
-              </span>
-            </div>
             <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight leading-none">
               推荐体验细分优化展示
             </h2>

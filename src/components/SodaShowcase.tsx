@@ -133,12 +133,6 @@ export default function SodaShowcase() {
         {/* Gallery filtering and stats section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-[#cee8d5] pb-6">
           <div className="space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs text-[#1fa469] tracking-widest font-bold uppercase font-sans">PANORAMA SHOTS // 成果全图集</span>
-              <span className="font-mono text-[10px] text-[#133022]/80 bg-[#edfcf3]/90 border border-[#beecd0]/80 px-2 py-0.5 rounded-full">
-                {filteredPages.length} 页视图
-              </span>
-            </div>
             <h2 className="text-xl md:text-2xl font-bold text-[#082216] tracking-tight leading-none">
               年度总结视觉成果展示
             </h2>

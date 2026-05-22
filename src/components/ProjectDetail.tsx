@@ -139,23 +139,23 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
             </h2>
           </div>
 
-          {/* Column 1: Industry problem */}
-          <div className="lg:col-span-4 space-y-3">
+          {/* Column 1: Industry problem in a text box */}
+          <div className={`lg:col-span-4 p-6 rounded-2xl border ${goalBoxClass} space-y-3 relative overflow-hidden shadow-xs hover:shadow-md transition-shadow duration-300`}>
             <span className="font-mono text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">
               INDUSTRY LANDSCAPE / 行业现状
             </span>
-            <div className={`w-6 h-0.5 ${hGradient} mb-2`} />
+            <div className={`w-6 h-0.5 ${hGradient} mb-1`} />
             <p className={`text-sm ${textMutedClass} leading-relaxed font-normal`}>
               {project.background.industryProblem}
             </p>
           </div>
 
-          {/* Column 2: User problem */}
-          <div className="lg:col-span-4 space-y-3">
+          {/* Column 2: User problem in a text box */}
+          <div className={`lg:col-span-4 p-6 rounded-2xl border ${goalBoxClass} space-y-3 relative overflow-hidden shadow-xs hover:shadow-md transition-shadow duration-300`}>
             <span className="font-mono text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">
               USER PAINPOINTS / 痛点定位
             </span>
-            <div className={`w-6 h-0.5 ${hGradient} mb-2`} />
+            <div className={`w-6 h-0.5 ${hGradient} mb-1`} />
             <p className={`text-sm ${textMutedClass} leading-relaxed font-normal`}>
               {project.background.userProblem}
             </p>
