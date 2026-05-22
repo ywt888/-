@@ -155,9 +155,6 @@ export default function App() {
                       作品集群
                     </h2>
                   </div>
-                  <p className="font-mono text-xs text-neutral-400 uppercase tracking-wider max-w-xs md:text-right">
-                    受 VERCEL / LINEAR 启发，每一个卡片都蕴藏了一套完整的交互向量演示
-                  </p>
                 </div>
 
                 {/* Projects Grid Map */}
