@@ -157,14 +157,9 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
       {/* Info Container */}
       <div className="p-6 md:p-8 space-y-6">
         
-        {/* Tag, Year and Role */}
+        {/* Tag */}
         <div className="flex items-center justify-between text-[10px] font-mono text-neutral-400 uppercase tracking-widest border-b border-neutral-50 pb-4">
           <span className="font-semibold text-black bg-neutral-100 px-2.5 py-1 rounded-full">{project.category}</span>
-          <div className="flex gap-3">
-            <span>{project.year}</span>
-            <span>•</span>
-            <span>{project.role}</span>
-          </div>
         </div>
 
         {/* Text descriptions */}

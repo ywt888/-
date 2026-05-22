@@ -7,21 +7,21 @@ export default function ContactSection() {
   const contactOptions = [
     {
       label: "微信 // WECHAT ID",
-      value: "yifan_creativ_ai",
+      value: "18057728807",
       icon: MessageSquare,
-      displayVal: "yifan_creativ_ai (直接复制添加)"
+      displayVal: "18057728807 (直接复制添加)"
     },
     {
       label: "个人邮箱 // EMAIL ADDRESS",
-      value: "ewa5n3kvurm3ne@treppenwitz.asia",
+      value: "1069656782@qq.com",
       icon: Mail,
-      displayVal: "ewa5n3kvurm3ne@treppenwitz.asia"
+      displayVal: "1069656782@qq.com"
     },
     {
       label: "联系电话 // TELEPHONE NUMBER",
-      value: "+86 188-2621-3810",
+      value: "+86 180-5772-8807",
       icon: Phone,
-      displayVal: "+86 188 2621 3810"
+      displayVal: "+86 180 5772 8807"
     }
   ];
 
@@ -43,40 +43,17 @@ export default function ContactSection() {
           <div className="lg:col-span-5 relative z-10 space-y-6">
             <div>
               <span className="font-mono text-xs text-neutral-400 uppercase tracking-widest block mb-2">
-                05 // CHANNELS
+                04 // CONTACT
               </span>
               <h2 className="text-3xl md:text-5xl font-extrabold text-black tracking-tight uppercase">
                 构建未来
               </h2>
             </div>
             <p className="text-sm text-neutral-500 leading-relaxed font-normal max-w-sm">
-              无论您是希望共建一个真正 AI-Native 的创造力生产力工具，寻找具备极佳工程感并直接生产高保真代码的创始设计师合伙人，还是想交流空间人机交互理念，我都极其乐意倾听。
+              无论您是希望共建更有温度的人机交互生态，打磨极致直觉化的微交互与体验流线，还是寻找兼具设计美学与硬核逻辑的交互体验设计师，我都非常期待与您交流。
             </p>
 
-            {/* Micro Links */}
-            <div className="flex flex-wrap gap-4 pt-6 font-mono text-[10px]">
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-1.5 text-neutral-400 hover:text-black transition-colors"
-              >
-                <Github className="w-3.5 h-3.5" />
-                <span>GITHUB</span>
-                <ExternalLink className="w-2.5 h-2.5" />
-              </a>
-              <span className="text-neutral-200">|</span>
-              <a
-                href="https://news.ycombinator.com"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-1.5 text-neutral-400 hover:text-black transition-colors"
-              >
-                <Globe className="w-3.5 h-3.5" />
-                <span>SHOWCASE_LOG</span>
-                <ExternalLink className="w-2.5 h-2.5" />
-              </a>
-            </div>
+
           </div>
 
           {/* Right Copy Clipboard cards column */}

@@ -20,7 +20,7 @@ export default function Navigation({ currentProjectId, onNavigateHome, onNavigat
             <span className="font-mono text-xs font-bold font-sans">A</span>
           </div>
           <div>
-            <h1 className="text-sm font-bold tracking-tight text-neutral-900 leading-none">周奕凡 Yifan</h1>
+            <h1 className="text-sm font-bold tracking-tight text-neutral-900 leading-none">叶文涛 Wentao</h1>
             <span className="font-mono text-[9px] text-neutral-400 tracking-wider">CREATOR // DESIGNER</span>
           </div>
         </button>
@@ -38,6 +38,12 @@ export default function Navigation({ currentProjectId, onNavigateHome, onNavigat
         ) : (
           // Home Page nav links
           <div className="flex items-center gap-6 md:gap-10">
+            <button
+              onClick={() => onNavigateSection('profile-section')}
+              className="text-xs font-medium text-neutral-500 hover:text-black transition-colors cursor-pointer relative py-1"
+            >
+              个人信息
+            </button>
             <button
               onClick={() => onNavigateSection('projects-section')}
               className="text-xs font-medium text-neutral-500 hover:text-black transition-colors cursor-pointer relative py-1"
