@@ -9,11 +9,25 @@ import { ArrowDown, MessageSquare, Terminal, Eye, Layers } from 'lucide-react';
 
 export default function App() {
   const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
+  const [savedScrollY, setSavedScrollY] = useState<number>(0);
 
-  // Automatically scroll to the top when navigating to an article/project detail view
+  // Automatically scroll to the top when navigating to an article/project detail view, but restore scroll position when returning home
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' as any });
-  }, [currentProjectId]);
+    if (currentProjectId !== null) {
+      window.scrollTo({ top: 0, behavior: 'instant' as any });
+    } else {
+      // Returning to homepage - restore saved scroll position with a microtimer to ensure DOM sizes are updated
+      const timer = setTimeout(() => {
+        window.scrollTo({ top: savedScrollY, behavior: 'instant' as any });
+      }, 40);
+      return () => clearTimeout(timer);
+    }
+  }, [currentProjectId, savedScrollY]);
+
+  const handleSelectProject = (projectId: string) => {
+    setSavedScrollY(window.scrollY);
+    setCurrentProjectId(projectId);
+  };
 
   const activeProject = PROJECTS.find(p => p.id === currentProjectId);
 
@@ -152,7 +166,7 @@ export default function App() {
                     <ProjectCard
                       key={project.id}
                       project={project}
-                      onClick={() => setCurrentProjectId(project.id)}
+                      onClick={() => handleSelectProject(project.id)}
                     />
                   ))}
                 </div>
