@@ -50,19 +50,13 @@ export default function Navigation({ currentProjectId, onNavigateHome, onNavigat
             >
               作品集群
             </button>
-            <button
-              onClick={() => onNavigateSection('contact-section')}
-              className="text-xs font-medium text-neutral-500 hover:text-black transition-colors cursor-pointer relative py-1"
-            >
-              触达
-            </button>
 
             {/* WeChat/Contact quick CTA in corner */}
             <button
               onClick={() => onNavigateSection('contact-section')}
-              className="hidden sm:inline-block font-mono text-[10px] bg-black text-white hover:bg-neutral-800 transition-colors px-3 py-1.5 rounded-full font-bold cursor-pointer"
+              className="hidden sm:inline-block text-[11px] bg-black text-white hover:bg-neutral-800 transition-colors px-3.5 py-1.5 rounded-full font-medium cursor-pointer"
             >
-              GET IN TOUCH
+              联系我
             </button>
           </div>
         )}

@@ -93,16 +93,16 @@ export default function App() {
                 <div className="flex flex-wrap items-center gap-4 pt-2">
                   <button
                     onClick={() => handleNavigateSection('projects-section')}
-                    className="flex items-center gap-2 bg-black hover:bg-neutral-800 text-white font-mono text-[11px] font-bold px-6 py-3.5 rounded-full transition-colors cursor-pointer"
+                    className="flex items-center justify-center gap-2 bg-black hover:bg-neutral-800 text-white font-mono text-[11px] font-bold px-10 py-4 rounded-full transition-colors cursor-pointer min-w-[160px] shadow-sm"
                   >
-                    <span>成果展示 // CORE SHOWCASES</span>
+                    <span>成果展示</span>
                     <ArrowDown className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => handleNavigateSection('contact-section')}
-                    className="flex items-center gap-2 border border-neutral-200 hover:border-black text-neutral-800 font-mono text-[11px] font-bold px-6 py-3.5 rounded-full transition-colors cursor-pointer bg-white"
+                    className="flex items-center justify-center gap-2 border border-neutral-200 hover:border-black text-neutral-800 font-mono text-[11px] font-bold px-10 py-4 rounded-full transition-colors cursor-pointer bg-white min-w-[160px] shadow-sm"
                   >
-                    <span>联系方式 // CONTACT</span>
+                    <span>联系方式</span>
                   </button>
                 </div>
               </div>
@@ -110,14 +110,12 @@ export default function App() {
               {/* Right Side: Hero Visual Frame containing professional portrait image */}
               <div className="lg:col-span-5 flex justify-center">
                 <div
-                  onClick={() => handleNavigateSection('projects-section')}
-                  className="group relative border border-neutral-100 p-3 bg-neutral-50/20 rounded-3xl max-w-sm w-full cursor-pointer hover:border-black transition-all hover:scale-[1.01] shadow-sm"
+                  className="group relative border border-neutral-100 p-3 bg-neutral-50/20 rounded-3xl max-w-sm w-full transition-all hover:scale-[1.01] shadow-sm"
                 >
-                  <div className="absolute top-[-8px] left-6 font-mono text-[8px] bg-neutral-900 text-white px-2 py-0.5 rounded-sm">
-                    METRIC_CROP_MARK: 50MM
-                  </div>
-
-                  <div className="overflow-hidden rounded-2xl aspect-[3/4] bg-neutral-100">
+                  <div
+                    onClick={() => handleNavigateSection('profile-section')}
+                    className="overflow-hidden rounded-2xl aspect-[3/4] bg-neutral-100 cursor-pointer"
+                  >
                     <img
                       src="/src/assets/images/founder_portrait_1779277018368.png"
                       alt="叶文涛 Wentao Portrait Black & White"
@@ -126,12 +124,14 @@ export default function App() {
                     />
                   </div>
 
-                  <div className="flex justify-between items-center font-mono text-[9px] text-neutral-400 mt-3.5 px-1">
-                    <span>CRAFTED IN CH_NATIVE (2026)</span>
-                    <span className="flex items-center gap-1.5 font-bold hover:text-black transition-colors">
+                  <div className="flex justify-end items-center font-mono text-[9px] text-neutral-400 mt-3.5 px-1">
+                    <button
+                      onClick={() => handleNavigateSection('projects-section')}
+                      className="flex items-center gap-1.5 font-bold text-neutral-400 hover:text-black transition-colors cursor-pointer"
+                    >
                       <Eye className="w-3 h-3" />
                       <span>查看作品</span>
-                    </span>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -192,7 +192,6 @@ export default function App() {
           <p className="text-center md:text-right font-serif italic text-neutral-500 text-sm">
             “ Let's build something meaningful together // 让我们携手缔造卓越品物。”
           </p>
-          <span className="text-[10px] tracking-widest text-neutral-400">[ CONTRACT APPROVED // DCI_MONO ]</span>
         </div>
       </footer>
 
