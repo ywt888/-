@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { PROJECTS } from './data';
+import { PROJECTS, IMAGES } from './data';
 import Navigation from './components/Navigation';
 import ProjectCard from './components/ProjectCard';
 import ProjectDetail from './components/ProjectDetail';
@@ -117,7 +117,7 @@ export default function App() {
                     className="overflow-hidden rounded-2xl aspect-[3/4] bg-neutral-100 cursor-pointer"
                   >
                     <img
-                      src="/src/assets/images/founder_portrait_1779277018368.png"
+                      src={IMAGES.founderPortrait}
                       alt="叶文涛 Wentao Portrait Black & White"
                       referrerPolicy="no-referrer"
                       className="w-full h-full object-cover grayscale brightness-105 active:scale-100 group-hover:scale-[1.03] transition-transform duration-[800ms] ease-out"

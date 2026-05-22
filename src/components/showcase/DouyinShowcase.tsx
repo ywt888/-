@@ -25,6 +25,7 @@ import {
   ThumbsUp,
   Sparkles
 } from 'lucide-react';
+import { IMAGES } from '../../data';
 
 interface DouyinPage {
   id: number;
@@ -76,16 +77,6 @@ export default function DouyinShowcase() {
 
   // Selected filters: 'all' | 'main_link' | 'social' | 'persuasion' | 'privacy'
   const [filter, setFilter] = useState<'all' | 'main_link' | 'social' | 'persuasion' | 'privacy'>('all');
-
-  // Custom uploaded images mapped by page ID (base64 or Object URLs)
-  const [userImages, setUserImages] = useState<Record<number, string>>(() => {
-    try {
-      const saved = localStorage.getItem('douyin_user_images');
-      return saved ? JSON.parse(saved) : {};
-    } catch {
-      return {};
-    }
-  });
 
   // Lightbox visualizer state
   const [activeLightboxPage, setActiveLightboxPage] = useState<DouyinPage | null>(null);
@@ -142,36 +133,6 @@ export default function DouyinShowcase() {
 
   // Audio spectrum rendering simulation
   const [spectrumData, setSpectrumData] = useState<number[]>(Array.from({ length: 24 }, () => Math.random() * 60 + 10));
-
-  // Handle local image file upload for slots
-  const handleImageUpload = (id: number, e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = reader.result as string;
-        const newImages = { ...userImages, [id]: result };
-        setUserImages(newImages);
-        try {
-          localStorage.setItem('douyin_user_images', JSON.stringify(newImages));
-        } catch (err) {
-          console.warn('Storage quota exceeded, using state-only memory.');
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // Clear slot image and restore defaults
-  const handleClearImage = (id: number, e: MouseEvent) => {
-    e.stopPropagation();
-    const newImages = { ...userImages };
-    delete newImages[id];
-    setUserImages(newImages);
-    try {
-      localStorage.setItem('douyin_user_images', JSON.stringify(newImages));
-    } catch {}
-  };
 
   // Video interval slide switching and timeline update simulation
   useEffect(() => {
@@ -720,18 +681,6 @@ export default function DouyinShowcase() {
               />
             </div>
           )}
-
-          {/* Absolute big central control overlay for visual prompt */}
-          {!isVideoPlaying && (
-            <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm z-20 transition-all">
-              <button
-                onClick={() => setIsVideoPlaying(true)}
-                className="w-20 h-20 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-[0_0_40px_rgba(255,255,255,0.2)] cursor-pointer"
-              >
-                <Play className="w-8 h-8 fill-black stroke-none ml-1" />
-              </button>
-            </div>
-          )}
         </div>
 
         {/* Video Footer Controller Layout */}
@@ -744,7 +693,7 @@ export default function DouyinShowcase() {
               className="p-2 border border-neutral-800 hover:border-white rounded-lg text-white hover:text-white transition-all cursor-pointer bg-neutral-900"
               title={isVideoPlaying ? '点击暂停' : '点击播放'}
             >
-              {isVideoPlaying ? <Pause className="w-4 h-4 fill-white" /> : <Play className="w-4 h-4 fill-white" />}
+              {isVideoPlaying ? <Pause className="w-4 h-4 fill-white animate-pulse" /> : <Play className="w-4 h-4 fill-white" />}
             </button>
 
             {/* Simulated Elapsed and Total time based on timeline */}
@@ -798,17 +747,42 @@ export default function DouyinShowcase() {
         
         {/* Gallery filtering and stats section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-neutral-900 pb-6">
-          <div className="space-y-1.5">
+          <div className="space-y-1.5 scroll-mt-24" id="gallery-container">
             <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight leading-none">
               推荐体验细分优化展示
             </h2>
+          </div>
+
+          {/* Tab Filters */}
+          <div className="flex flex-wrap items-center gap-1.5 bg-neutral-950/80 p-1 rounded-xl border border-neutral-900">
+            {(['all', 'main_link', 'social', 'persuasion', 'privacy'] as const).map((t) => {
+              const labelMap: Record<string, string> = {
+                all: '全部',
+                main_link: '主干链路',
+                social: '社交分流',
+                persuasion: '说服交互',
+                privacy: '隐私控制'
+              };
+              return (
+                <button
+                  key={t}
+                  onClick={() => setFilter(t)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium font-sans cursor-pointer transition-all ${
+                    filter === t
+                      ? 'bg-white text-black shadow-md font-semibold'
+                      : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {labelMap[t]}
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {/* 32 cards grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPages.map((page) => {
-            const hasUserImage = userImages[page.id] ? true : false;
             const cardBorderColor = page.id % 2 === 0 
               ? 'hover:border-[#fe2c55]' 
               : 'hover:border-[#25f4ee]';
@@ -817,107 +791,64 @@ export default function DouyinShowcase() {
               <div
                 key={page.id}
                 onClick={() => setActiveLightboxPage(page)}
-                className={`group relative aspect-video border border-neutral-900 rounded-2xl bg-[#09090b] text-white flex flex-col justify-between p-5 transition-all duration-300 hover:shadow-2xl overflow-hidden cursor-pointer active:scale-[0.98] ${cardBorderColor}`}
+                className={`group relative aspect-video border border-neutral-900 rounded-2xl bg-[#09090b] text-white flex flex-col justify-between overflow-hidden cursor-pointer active:scale-[0.98] transition-all duration-300 hover:shadow-2xl ${cardBorderColor}`}
               >
-                
-                {/* Background Grid Accent for TikTok vibe */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
-                
-                {/* Visual shadow effect */}
-                <div 
-                  className="absolute -right-16 -top-16 w-36 h-36 rounded-full opacity-[0.14] group-hover:opacity-[0.25] blur-3xl transition-opacity pointer-events-none"
-                  style={{ backgroundColor: page.accent }}
+                {/* Underlaid Mockup Design Image */}
+                <img 
+                  src={IMAGES.douyinPresets[page.id - 1]} 
+                  alt={page.title} 
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none"
+                  referrerPolicy="no-referrer"
                 />
 
-                {/* If the user uploaded a custom JPG/PNG image slot, overlay it */}
-                {hasUserImage ? (
-                  <div className="absolute inset-0 z-10 bg-neutral-900 group">
-                    <img 
-                      src={userImages[page.id]} 
-                      alt="" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      referrerPolicy="no-referrer"
-                    />
-                    
-                    {/* Modern subtle hover panel with action triggers */}
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-4">
-                      <div className="flex justify-between items-center w-full">
-                        <span className="font-mono text-[9px] bg-white/20 px-2 py-0.5 rounded backdrop-blur">
-                          CUSTOM_CARD_0{page.id}
-                        </span>
-                        
-                        {/* Remove custom upload */}
-                        <button
-                          onClick={(e) => handleClearImage(page.id, e)}
-                          className="p-1 px-1.5 bg-red-600 hover:bg-red-700 text-white rounded text-[9px] font-mono flex items-center gap-1 transition-all pointer-events-auto"
-                          title="恢复默认设计版式"
-                        >
-                          <Trash2 className="w-3 h-3" />
-                          <span>还原</span>
-                        </button>
-                      </div>
-                      <span className="font-mono text-[9px] text-neutral-400 bg-black/60 px-2.5 py-1 rounded-md self-start">
-                        规格: {page.size} PX (自定义)
+                {/* Background Grid Accent overlay */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none z-10 opacity-35" />
+                
+                {/* Interactive HUD Overlay Panel */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-black/75 opacity-85 group-hover:opacity-100 transition-opacity duration-350 z-20 flex flex-col justify-between p-4 md:p-5">
+                  
+                  {/* Top Metadata Line */}
+                  <div className="flex justify-between items-start w-full border-b border-white/10 pb-1.5">
+                    <div className="flex flex-col">
+                      <span className="font-mono text-[9px] text-[#25f4ee] font-bold uppercase tracking-widest">
+                        DOUYIN_UI // SLIDE_{page.id < 10 ? `0${page.id}` : page.id}
+                      </span>
+                      <span className="text-[11px] font-bold text-neutral-100 truncate mt-0.5 max-w-[155px]">
+                        {page.title.split('/')[0]}
                       </span>
                     </div>
+                    <span className="font-mono text-[8.5px] px-2 py-0.5 rounded-md bg-white/10 uppercase border border-white/15 text-neutral-300 font-semibold">
+                      {page.category === 'main_link' ? '主干链路' : page.category === 'social' ? '社交分流' : page.category === 'persuasion' ? '说服交互' : '隐私控制'}
+                    </span>
                   </div>
-                ) : (
-                  // Procedual beautiful Swiss typographic layout for our preset designs
-                  <>
-                    {/* Top banner */}
-                    <div className="flex justify-between items-start z-10 w-full border-b border-white/5 pb-1.5">
-                      <div className="flex flex-col">
-                        <span className="font-mono text-[8px] text-neutral-500 uppercase tracking-widest">DOUYIN_UI // SLIDE_0{page.id}</span>
-                      </div>
-                      <span className="font-mono text-[8px] px-1.5 py-0.5 rounded bg-white/5 uppercase border border-white/10 text-neutral-400">
-                        {page.category === 'main_link' ? '主干链路' : page.category === 'social' ? '社交分流' : page.category === 'persuasion' ? '说服交互' : '隐私控制'}
-                      </span>
-                    </div>
 
-                    {/* Rich Vector visualizer body */}
-                    <div className="my-auto z-10 flex flex-col items-center justify-center space-y-1 w-full text-center py-1">
-                      <div className="flex items-baseline gap-1.5 justify-center">
-                        <span 
-                          className="font-sans text-3xl md:text-4xl font-black tracking-tighter"
-                          style={{ 
-                            color: page.accent,
-                            textShadow: `0 0 20px ${page.accent}20`
-                          }}
-                        >
-                          {page.stat}
-                        </span>
-                        <span className="font-mono text-[9px] text-neutral-400 tracking-wider">
-                          {page.unit}
-                        </span>
-                      </div>
+                  {/* Centered statistics indicator */}
+                  <div className="flex flex-col items-center justify-center text-center my-auto py-1">
+                    <span 
+                      className="font-sans text-3xl md:text-4xl font-black tracking-tighter"
+                      style={{ 
+                        color: page.accent,
+                        textShadow: `0 0 18px ${page.accent}30`
+                      }}
+                    >
+                      {page.stat}
+                    </span>
+                    <span className="font-mono text-[9px] text-neutral-400 tracking-wider font-semibold mt-0.5">
+                      {page.unit}
+                    </span>
+                  </div>
 
-                      {/* Explicit Dimensions Badge */}
-                      <span className="font-mono text-[8.5px] font-semibold px-2 py-0.5 rounded-full border bg-white/5 border-white/10 text-neutral-400">
-                        规格: {page.size} PX
-                      </span>
-                    </div>
+                  {/* Bottom Line with Spec details */}
+                  <div className="pt-1.5 border-t border-white/15 flex justify-between items-center">
+                    <span className="font-mono text-[8.5px] text-neutral-400 font-medium">
+                      规格: {page.size} PX
+                    </span>
+                    <span className="font-mono text-[8px] text-[#25f4ee]/70 font-semibold tracking-wide uppercase">
+                      STANDARDS_MOCKUP
+                    </span>
+                  </div>
 
-                    {/* Bottom editorial content details panel */}
-                    <div className="z-10 w-full pt-1.5 border-t border-white/5 space-y-1">
-                      {/* Drop-in manual uploader button */}
-                      <div className="flex justify-between items-center">
-                        <span className="font-mono text-[8.5px] text-neutral-600 uppercase">TIKTOK_RECOMM_UX</span>
-                        
-                        <label className="p-0.5 px-1.5 bg-white text-black hover:bg-[#25f4ee] rounded-md text-[8.5px] font-mono flex items-center gap-1 transition-all cursor-pointer">
-                          <Upload className="w-2.5 h-2.5" />
-                          <span>替换图片</span>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleImageUpload(page.id, e)}
-                            className="hidden"
-                          />
-                        </label>
-                      </div>
-                    </div>
-                  </>
-                )}
-
+                </div>
               </div>
             );
           })}
@@ -982,65 +913,74 @@ export default function DouyinShowcase() {
             </button>
 
             {/* Pure Visual Screen Container */}
-            <div className="w-full aspect-video md:aspect-auto md:h-[82vh] bg-[#09090b] flex flex-col justify-between relative p-8">
+            <div className="w-full md:h-[82vh] bg-[#050508] flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-neutral-900 relative">
               
-              {userImages[activeLightboxPage.id] ? (
-                // Show custom representation centered with object-contain
-                <div className="absolute inset-0 z-10 flex items-center justify-center bg-black">
-                  <img
-                    src={userImages[activeLightboxPage.id]}
-                    alt=""
-                    className="w-full h-full object-contain pointer-events-none"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-              ) : (
-                // Show default gorgeous dynamic visual card backdrop
-                <>
-                  <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px] opacity-10 pointer-events-none" />
-                  <div 
-                    className="absolute inset-0 opacity-[0.25] blur-3xl pointer-events-none"
-                    style={{ background: `radial-gradient(circle, ${activeLightboxPage.accent}40 0%, transparent 70%)` }}
-                  />
-                  
-                  {/* Card content inside lightbox */}
-                  <div className="z-10 flex justify-between items-center w-full border-b border-white/5 pb-4">
-                    <span className="font-mono text-xs bg-white/10 px-2.5 py-1 rounded text-neutral-300">
-                      DOUYIN_UI_0{activeLightboxPage.id}
+              {/* Left Side: The Image Canvas */}
+              <div className="grow flex items-center justify-center p-6 relative bg-black/40">
+                <div className="absolute inset-0 bg-[radial-gradient(#222_1px,transparent_1px)] [background-size:16px_16px] opacity-35" />
+                <div 
+                  className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-64 opacity-25 blur-[100px] pointer-events-none"
+                  style={{ background: `radial-gradient(circle, ${activeLightboxPage.accent}30 0%, transparent 70%)` }}
+                />
+                
+                <img
+                  src={IMAGES.douyinPresets[activeLightboxPage.id - 1]}
+                  alt={activeLightboxPage.title}
+                  className="max-h-[45vh] md:max-h-[65vh] w-auto object-contain rounded-2xl border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] z-10 transition-transform duration-300"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+
+              {/* Right Side: The Swiss editorial panel describing design guidelines */}
+              <div className="w-full md:w-[360px] shrink-0 bg-[#0c0c0f] p-6 flex flex-col justify-between text-white z-10 relative">
+                <div className="space-y-6">
+                  {/* Top slide identifier */}
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] bg-neutral-900 border border-neutral-800 px-2.5 py-1 rounded-md text-neutral-400">
+                      SLIDE_0{activeLightboxPage.id}
                     </span>
-                    <span className="font-mono text-xs text-neutral-400">SPECIFICATION: {activeLightboxPage.size} PX</span>
+                    <span className="font-mono text-[9px] text-[#25f4ee] uppercase tracking-widest font-bold">
+                      {activeLightboxPage.category.toUpperCase()}
+                    </span>
                   </div>
 
-                  <div className="z-10 my-auto flex flex-col items-center text-center py-12">
-                    <h2 
-                      className="text-5xl md:text-7xl font-black tracking-tighter"
-                      style={{ color: activeLightboxPage.accent }}
-                    >
-                      {activeLightboxPage.stat}
-                    </h2>
-                    <p className="font-mono text-sm text-neutral-350 uppercase tracking-widest mt-3">
-                      {activeLightboxPage.unit}
+                  {/* Stat Display Box */}
+                  <div className="space-y-1 bg-black/30 p-4 rounded-2xl border border-white/5">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-black tracking-tight" style={{ color: activeLightboxPage.accent }}>
+                        {activeLightboxPage.stat}
+                      </span>
+                      <span className="font-mono text-xs text-neutral-400 font-semibold">{activeLightboxPage.unit}</span>
+                    </div>
+                    <p className="text-[11px] text-neutral-500 font-mono tracking-wider uppercase mt-1">CORE PERFORMANCE KEYPOINT</p>
+                  </div>
+
+                  {/* Details text describing this specific mockup */}
+                  <div className="space-y-2">
+                    <h3 className="text-sm font-bold text-neutral-200 tracking-tight">{activeLightboxPage.title}</h3>
+                    <p className="text-xs text-neutral-400 leading-relaxed font-normal">
+                      {activeLightboxPage.details}
                     </p>
                   </div>
 
-                  <div className="z-10 w-full pt-4 border-t border-[#ffffff]/10 flex items-center justify-between">
-                    <span className="font-mono text-[10px] text-neutral-500 uppercase">{activeLightboxPage.category.toUpperCase()} SECTION</span>
-                    
-                    <label className="p-1 px-3 bg-white text-black hover:bg-[#25f4ee] rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer">
-                      <Upload className="w-3.5 h-3.5" />
-                      <span>选择上传真实图片</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                          handleImageUpload(activeLightboxPage.id, e);
-                        }}
-                        className="hidden"
-                      />
-                    </label>
+                  {/* Specification details */}
+                  <div className="space-y-2 pt-4 border-t border-neutral-900 font-mono text-[10px] text-neutral-500">
+                    <div className="flex justify-between">
+                      <span>画布比例</span>
+                      <span className="text-neutral-300">16 : 9 (横屏)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>建议规格</span>
+                      <span className="text-neutral-300">{activeLightboxPage.size} PX</span>
+                    </div>
                   </div>
-                </>
-              )}
+                </div>
+
+                <div className="pt-4 border-t border-neutral-900 flex items-center justify-between font-mono text-[9px] text-neutral-600 uppercase font-semibold">
+                  <span>SYSTEM // STANDARD APPROVED</span>
+                  <span>TIKTOK UX RESEARCH GROUP</span>
+                </div>
+              </div>
 
             </div>
 

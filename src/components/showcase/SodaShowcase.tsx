@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
+import { IMAGES } from '../../data';
 
 interface SodaPage {
   id: number;
@@ -49,48 +50,10 @@ export default function SodaShowcase() {
   // Selected filters: 'all' | 'core' | 'ip' | 'social' | 'season'
   const [filter, setFilter] = useState<'all' | 'core' | 'ip' | 'social' | 'season'>('all');
 
-  // Custom uploaded images mapped by page ID (base64 or Object URLs)
-  const [userImages, setUserImages] = useState<Record<number, string>>(() => {
-    try {
-      const saved = localStorage.getItem('soda_user_images');
-      return saved ? JSON.parse(saved) : {};
-    } catch {
-      return {};
-    }
-  });
-
   // Lightbox visualizer state
   const [activeLightboxPage, setActiveLightboxPage] = useState<SodaPage | null>(null);
 
-  // Handle local image file upload for slots
-  const handleImageUpload = (id: number, e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = reader.result as string;
-        const newImages = { ...userImages, [id]: result };
-        setUserImages(newImages);
-        try {
-          localStorage.setItem('soda_user_images', JSON.stringify(newImages));
-        } catch (err) {
-          console.warn('Storage quota exceeded, using state-only memory.');
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
-  // Clear slot image and restore defaults
-  const handleClearImage = (id: number, e: MouseEvent) => {
-    e.stopPropagation();
-    const newImages = { ...userImages };
-    delete newImages[id];
-    setUserImages(newImages);
-    try {
-      localStorage.setItem('soda_user_images', JSON.stringify(newImages));
-    } catch {}
-  };
 
   // Filtering the pages
   const filteredPages = filter === 'all' 
@@ -137,14 +100,11 @@ export default function SodaShowcase() {
               年度总结视觉成果展示
             </h2>
           </div>
-
-
         </div>
 
         {/* 15 cards grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPages.map((page) => {
-            const hasUserImage = userImages[page.id] ? true : false;
             const is15thPost = page.id === 15;
             
             const cardBorderColor = page.id % 3 === 0 
@@ -157,113 +117,69 @@ export default function SodaShowcase() {
               <div
                 key={page.id}
                 onClick={() => setActiveLightboxPage(page)}
-                className={`group relative aspect-video border transition-all duration-300 hover:shadow-xl overflow-hidden cursor-pointer active:scale-[0.98] rounded-2xl bg-white text-[#133022] flex flex-col justify-between p-5 ${
+                className={`group relative aspect-video border transition-all duration-300 hover:shadow-2xl overflow-hidden cursor-pointer active:scale-[0.98] rounded-2xl bg-white text-[#133022] flex flex-col justify-between ${
                   is15thPost 
                     ? 'border-[#ffc300] shadow-[0_4px_20px_rgba(255,195,0,0.15)] hover:border-[#ffd300]' 
                     : `border-[#d0eed8] ${cardBorderColor}`
                 }`}
               >
                 
-                {/* Background Grid Accent for TikTok/Soda vibe */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(31,164,105,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(31,164,105,0.03)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
-                
-                {/* Visual shadow effect */}
-                <div 
-                  className="absolute -right-16 -top-16 w-36 h-36 rounded-full opacity-[0.12] group-hover:opacity-[0.22] blur-3xl transition-opacity pointer-events-none"
-                  style={{ backgroundColor: page.accent }}
+                {/* Underlaid Mockup Design Image (Preset) */}
+                <img 
+                  src={IMAGES.sodaPresets[page.id - 1]} 
+                  alt={page.title} 
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none"
+                  referrerPolicy="no-referrer"
                 />
 
-                {/* If the user uploaded a custom JPG/PNG image slot, overlay it */}
-                {hasUserImage ? (
-                  <div className="absolute inset-0 z-10 bg-[#09090b] group">
-                    <img 
-                      src={userImages[page.id]} 
-                      alt="" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      referrerPolicy="no-referrer"
-                    />
-                    
-                    {/* Modern subtle hover panel with action triggers */}
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-4">
-                      <div className="flex justify-between items-center w-full">
-                        <span className="font-mono text-[9px] bg-white/20 px-2.5 py-1 rounded backdrop-blur text-white">
-                          PAGE_0{page.id}
-                        </span>
-                        <button
-                          onClick={(e) => handleClearImage(page.id, e)}
-                          className="p-1 px-1.5 bg-red-600 hover:bg-red-700 text-white rounded text-[9px] font-mono flex items-center gap-1 transition-all pointer-events-auto"
-                          title="恢复默认设计版式"
-                        >
-                          <Trash2 className="w-3 h-3" />
-                          <span>还原</span>
-                        </button>
-                      </div>
-                      <span className="font-mono text-[9px] text-neutral-400 bg-black/60 px-2.5 py-1 rounded-md self-start">
-                        规格: {page.size} PX (自定义)
+                {/* Background Grid Accent overlay */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(31,164,105,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(31,164,105,0.03)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none z-10 opacity-40" />
+                
+                {/* Beautiful HUD glass overlay designed for Soda (Green tint & Light mode gradient) */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#133022]/95 via-black/10 to-[#133022]/70 opacity-80 group-hover:opacity-100 transition-opacity duration-300 z-20 flex flex-col justify-between p-4 md:p-5">
+                  
+                  {/* Top Metadata Line */}
+                  <div className="flex justify-between items-start w-full border-b border-white/10 pb-1.5">
+                    <div className="flex flex-col">
+                      <span className="font-mono text-[9px] text-[#2af0a3] font-bold uppercase tracking-widest">
+                        SODA_REVAL // PAGE_{page.id < 10 ? `0${page.id}` : page.id}
+                      </span>
+                      <span className="text-[11px] font-bold text-neutral-100 truncate mt-0.5 max-w-[155px]">
+                        {page.title.split('/')[0]}
                       </span>
                     </div>
+                    <span className="font-mono text-[8.5px] px-2 py-0.5 rounded-md bg-white/10 uppercase border border-white/15 text-neutral-300 font-semibold font-mono">
+                      {page.category === 'core' ? '核心' : page.category === 'ip' ? '定制IP' : page.category === 'season' ? '四季' : '插图分享'}
+                    </span>
                   </div>
-                ) : (
-                  // Procedural beautiful design representation
-                  <>
-                    {/* Top banner */}
-                    <div className="flex justify-between items-start z-10 w-full border-b border-[#e6f4eb] pb-1.5">
-                      <div className="flex flex-col">
-                        <span className="font-mono text-[8px] text-[#3f5e4d] uppercase tracking-widest">SODA_REVAL // PAGE_0{page.id}</span>
-                      </div>
-                      <span className="font-mono text-[8px] px-1.5 py-0.5 rounded bg-[#ebfcf3] uppercase border border-[#beecd0] text-[#1fa469]">
-                        {page.category}
-                      </span>
-                    </div>
 
-                    {/* Rich Vector visualizer body */}
-                    <div className="my-auto z-10 flex flex-col items-center justify-center space-y-1 w-full text-center py-1">
-                      <div className="flex items-baseline gap-1.5 justify-center">
-                        <span 
-                          className="font-sans text-3xl md:text-4xl font-black tracking-tighter"
-                          style={{ 
-                            color: page.accent,
-                            textShadow: `0 4px 15px ${page.accent}15`
-                          }}
-                        >
-                          {page.stat}
-                        </span>
-                        <span className="font-mono text-[9px] text-[#3f5e4d] tracking-wider font-semibold">
-                          {page.unit}
-                        </span>
-                      </div>
+                  {/* Centered statistical core */}
+                  <div className="flex flex-col items-center justify-center text-center my-auto py-1">
+                    <span 
+                      className="font-sans text-3xl md:text-4xl font-black tracking-tighter"
+                      style={{ 
+                        color: page.accent,
+                        textShadow: `0 0 15px ${page.accent}20`
+                      }}
+                    >
+                      {page.stat}
+                    </span>
+                    <span className="font-mono text-[9px] text-neutral-400 tracking-wider font-semibold mt-0.5 font-mono">
+                      {page.unit}
+                    </span>
+                  </div>
 
-                      {/* Explicit Dimensions Badge */}
-                      <span className={`font-mono text-[8.5px] font-semibold px-2 py-0.5 rounded-full border ${
-                        is15thPost 
-                          ? 'bg-[#fffbeb] border-[#fde68a] text-[#b45309]' 
-                          : 'bg-[#edfcf3] border-[#beecd0]/80 text-[#1fa469]'
-                      }`}>
-                        规格: {page.size} PX
-                      </span>
-                    </div>
+                  {/* Bottom HUD controls */}
+                  <div className="pt-1.5 border-t border-white/10 flex justify-between items-center">
+                    <span className="font-mono text-[8.5px] text-neutral-400 font-medium font-mono">
+                      规格: {page.size} PX
+                    </span>
+                    <span className="font-mono text-[8.5px] text-[#2af0a3]/70 font-bold uppercase tracking-widest">
+                      STANDARDS_MOCKUP
+                    </span>
+                  </div>
 
-                    {/* Bottom editorial content details panel */}
-                    <div className="z-10 w-full pt-1.5 border-t border-[#e6f4eb] space-y-1">
-                      {/* Drop-in manual uploader button */}
-                      <div className="flex justify-between items-center">
-                        <span className="font-mono text-[8.5px] text-[#9dbfae] font-semibold uppercase">SWISS_SVG_RENDER</span>
-                        
-                        <label className="p-0.5 px-1.5 bg-[#1fa469] hover:bg-[#128a52] text-white rounded-md text-[8.5px] font-mono flex items-center gap-1 transition-all cursor-pointer">
-                          <Upload className="w-2.5 h-2.5" />
-                          <span>替换图片</span>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleImageUpload(page.id, e)}
-                            className="hidden"
-                          />
-                        </label>
-                      </div>
-                    </div>
-                  </>
-                )}
-
+                </div>
               </div>
             );
           })}
@@ -328,65 +244,74 @@ export default function SodaShowcase() {
             </button>
 
             {/* Pure Visual Screen Container */}
-            <div className="w-full aspect-video md:aspect-auto md:h-[82vh] bg-[#f9fefb] flex flex-col justify-between relative p-8">
+            <div className="w-full md:h-[82vh] bg-[#edf8f2] flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-[#cbe8d4] relative">
               
-              {userImages[activeLightboxPage.id] ? (
-                // Show custom representation
-                <div className="absolute inset-0 z-10 flex items-center justify-center bg-white">
-                  <img
-                    src={userImages[activeLightboxPage.id]}
-                    alt=""
-                    className="w-full h-full object-contain pointer-events-none"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-              ) : (
-                // Show default gorgeous dynamic visual card backdrop
-                <>
-                  <div className="absolute inset-0 bg-[radial-gradient(#1fa469_1px,transparent_1px)] [background-size:16px_16px] opacity-10 pointer-events-none" />
-                  <div 
-                    className="absolute inset-0 opacity-[0.20] blur-3xl pointer-events-none animate-pulse"
-                    style={{ background: `radial-gradient(circle, ${activeLightboxPage.accent}40 0%, transparent 70%)` }}
-                  />
-                  
-                  {/* Card content inside lightbox */}
-                  <div className="z-10 flex justify-between items-center w-full border-b border-[#e6f4eb] pb-4">
-                    <span className="font-mono text-xs bg-[#ebfcf3] border border-[#beecd0] px-2.5 py-1 rounded text-[#1fa469]">
-                      SODA_REVAL // PAGE_0{activeLightboxPage.id}
+              {/* Left Side: The Image Canvas with interactive background */}
+              <div className="grow flex items-center justify-center p-6 relative bg-[#f1faf5]">
+                <div className="absolute inset-0 bg-[radial-gradient(#abdbbe_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none" />
+                <div 
+                  className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-64 opacity-25 blur-[100px] pointer-events-none"
+                  style={{ background: `radial-gradient(circle, ${activeLightboxPage.accent}30 0%, transparent 70%)` }}
+                />
+                
+                <img
+                  src={IMAGES.sodaPresets[activeLightboxPage.id - 1]}
+                  alt={activeLightboxPage.title}
+                  className="max-h-[45vh] md:max-h-[65vh] w-auto object-contain rounded-2xl border border-white/40 shadow-[0_25px_60px_-15px_rgba(20,60,40,0.25)] z-10"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+
+              {/* Right Side: The Swiss editorial panel describing design guidelines */}
+              <div className="w-full md:w-[360px] shrink-0 bg-white p-6 flex flex-col justify-between text-[#133022] z-10 relative">
+                <div className="space-y-6">
+                  {/* Top slide identifier */}
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] bg-[#ebfcf3] border border-[#beecd0] px-2.5 py-1 rounded-md text-[#1fa469] font-bold">
+                      PAGE_0{activeLightboxPage.id}
                     </span>
-                    <span className="font-mono text-xs text-[#3f5e4d]">SPECIFICATION: {activeLightboxPage.size} PX</span>
+                    <span className="font-mono text-[9px] text-[#2af0a3] bg-[#133022] px-2 py-0.5 rounded uppercase tracking-widest font-bold font-mono">
+                      {activeLightboxPage.category.toUpperCase()}
+                    </span>
                   </div>
 
-                  <div className="z-10 my-auto flex flex-col items-center text-center py-12">
-                    <h2 
-                      className="text-5xl md:text-7xl font-black tracking-tighter"
-                      style={{ color: activeLightboxPage.accent }}
-                    >
-                      {activeLightboxPage.stat}
-                    </h2>
-                    <p className="font-mono text-sm text-[#3f5e4d] uppercase tracking-widest mt-3">
-                      {activeLightboxPage.unit}
+                  {/* Stat Display Box */}
+                  <div className="space-y-1 bg-[#f6fdf9] p-4 rounded-2xl border border-[#d0eed8]">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-black tracking-tight" style={{ color: activeLightboxPage.accent }}>
+                        {activeLightboxPage.stat}
+                      </span>
+                      <span className="font-mono text-xs text-[#3f5e4d] font-bold font-mono">{activeLightboxPage.unit}</span>
+                    </div>
+                    <p className="text-[10px] text-[#9dbfae] font-mono tracking-wider uppercase mt-1">CORE LISTEN KEYPOINT</p>
+                  </div>
+
+                  {/* Details text describing this specific mockup */}
+                  <div className="space-y-2">
+                    <h3 className="text-sm font-bold text-[#133022] tracking-tight">{activeLightboxPage.title}</h3>
+                    <p className="text-xs text-[#527060] leading-relaxed font-normal">
+                      {activeLightboxPage.details}
                     </p>
                   </div>
 
-                  <div className="z-10 w-full pt-4 border-t border-[#e6f4eb] flex items-center justify-between">
-                    <span className="font-mono text-[10px] text-[#9dbfae] uppercase">{activeLightboxPage.category.toUpperCase()} SECTION</span>
-                    
-                    <label className="p-1 px-3 bg-[#1fa469] hover:bg-[#128a52] text-white rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer">
-                      <Upload className="w-3.5 h-3.5" />
-                      <span>选择上传真实图片</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                          handleImageUpload(activeLightboxPage.id, e);
-                        }}
-                        className="hidden"
-                      />
-                    </label>
+                  {/* Specification details */}
+                  <div className="space-y-2 pt-4 border-t border-[#e6f4eb] font-mono text-[10px] text-[#9dbfae]">
+                    <div className="flex justify-between">
+                      <span>画布比例</span>
+                      <span className="text-[#3f5e4d] font-semibold">16 : 9 (横屏)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>建议规格</span>
+                      <span className="text-[#3f5e4d] font-semibold">{activeLightboxPage.size} PX</span>
+                    </div>
                   </div>
-                </>
-              )}
+                </div>
+
+                <div className="pt-4 border-t border-[#e6f4eb] flex items-center justify-between font-mono text-[9px] text-[#9dbfae] uppercase font-bold">
+                  <span>SYSTEM // STANDARD APPROVED</span>
+                  <span>SODA UX RESEARCH GROUP</span>
+                </div>
+              </div>
 
             </div>
 
