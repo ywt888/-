@@ -278,7 +278,10 @@ export default function SodaShowcase() {
 
       {/* FULL-SCREEN DETAILED EDITING LIGHTBOX */}
       {activeLightboxPage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ebf8f2]/90 backdrop-blur-xl p-6 transition-all duration-300">
+        <div 
+          onClick={() => setActiveLightboxPage(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#ebf8f2]/90 backdrop-blur-xl p-6 transition-all duration-300 cursor-zoom-out"
+        >
           <div className="absolute inset-0 bg-[radial-gradient(#1fa469_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none opacity-10" />
 
           {/* Left page switcher trigger */}
@@ -317,7 +320,10 @@ export default function SodaShowcase() {
             </button>
           )}
 
-          <div className="relative w-full max-w-3xl bg-white border border-[#beecd0] rounded-3xl flex flex-col shadow-2xl overflow-hidden text-[#133022] max-h-[90vh]">
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl bg-white border border-[#beecd0] rounded-3xl flex flex-col shadow-2xl overflow-hidden text-[#133022] max-h-[92vh] cursor-default"
+          >
             
             {/* Close trigger button */}
             <button
@@ -328,7 +334,7 @@ export default function SodaShowcase() {
             </button>
 
             {/* Pure Visual Screen Container */}
-            <div className="w-full aspect-video md:aspect-auto md:h-[75vh] bg-[#f9fefb] flex flex-col justify-between relative p-8">
+            <div className="w-full aspect-video md:aspect-auto md:h-[82vh] bg-[#f9fefb] flex flex-col justify-between relative p-8">
               
               {userImages[activeLightboxPage.id] ? (
                 // Show custom representation
