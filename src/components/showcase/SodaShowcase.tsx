@@ -47,18 +47,13 @@ export default function SodaShowcase() {
     { id: 15, title: '岁末音乐盛典专属海报 / Yearend Poster', stat: '1928×2493', unit: '高分辨率最终分享海报', details: '报告完美收官！整合一年深度听歌喜好的高维极简装饰海报，用于社交媒体大图展示，视觉比例经过极致调优。', accent: '#ffd300', category: 'social', size: '1928 × 2493' },
   ];
 
-  // Selected filters: 'all' | 'core' | 'ip' | 'social' | 'season'
-  const [filter, setFilter] = useState<'all' | 'core' | 'ip' | 'social' | 'season'>('all');
-
   // Lightbox visualizer state
   const [activeLightboxPage, setActiveLightboxPage] = useState<SodaPage | null>(null);
 
 
 
-  // Filtering the pages
-  const filteredPages = filter === 'all' 
-    ? defaultPages 
-    : defaultPages.filter(p => p.category === filter);
+  // List of all pages
+  const filteredPages = defaultPages;
 
   // Lightbox keyboard navigation
   useEffect(() => {
@@ -117,7 +112,7 @@ export default function SodaShowcase() {
               <div
                 key={page.id}
                 onClick={() => setActiveLightboxPage(page)}
-                className={`group relative aspect-video border transition-all duration-300 hover:shadow-2xl overflow-hidden cursor-pointer active:scale-[0.98] rounded-2xl bg-white text-[#133022] flex flex-col justify-between ${
+                className={`group relative aspect-video border transition-all duration-300 hover:shadow-2xl overflow-hidden cursor-pointer active:scale-[0.98] rounded-2xl bg-white flex flex-col justify-between ${
                   is15thPost 
                     ? 'border-[#ffc300] shadow-[0_4px_20px_rgba(255,195,0,0.15)] hover:border-[#ffd300]' 
                     : `border-[#d0eed8] ${cardBorderColor}`
@@ -131,55 +126,6 @@ export default function SodaShowcase() {
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none"
                   referrerPolicy="no-referrer"
                 />
-
-                {/* Background Grid Accent overlay */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(31,164,105,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(31,164,105,0.03)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none z-10 opacity-40" />
-                
-                {/* Beautiful HUD glass overlay designed for Soda (Green tint & Light mode gradient) */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#133022]/95 via-black/10 to-[#133022]/70 opacity-80 group-hover:opacity-100 transition-opacity duration-300 z-20 flex flex-col justify-between p-4 md:p-5">
-                  
-                  {/* Top Metadata Line */}
-                  <div className="flex justify-between items-start w-full border-b border-white/10 pb-1.5">
-                    <div className="flex flex-col">
-                      <span className="font-mono text-[9px] text-[#2af0a3] font-bold uppercase tracking-widest">
-                        SODA_REVAL // PAGE_{page.id < 10 ? `0${page.id}` : page.id}
-                      </span>
-                      <span className="text-[11px] font-bold text-neutral-100 truncate mt-0.5 max-w-[155px]">
-                        {page.title.split('/')[0]}
-                      </span>
-                    </div>
-                    <span className="font-mono text-[8.5px] px-2 py-0.5 rounded-md bg-white/10 uppercase border border-white/15 text-neutral-300 font-semibold font-mono">
-                      {page.category === 'core' ? '核心' : page.category === 'ip' ? '定制IP' : page.category === 'season' ? '四季' : '插图分享'}
-                    </span>
-                  </div>
-
-                  {/* Centered statistical core */}
-                  <div className="flex flex-col items-center justify-center text-center my-auto py-1">
-                    <span 
-                      className="font-sans text-3xl md:text-4xl font-black tracking-tighter"
-                      style={{ 
-                        color: page.accent,
-                        textShadow: `0 0 15px ${page.accent}20`
-                      }}
-                    >
-                      {page.stat}
-                    </span>
-                    <span className="font-mono text-[9px] text-neutral-400 tracking-wider font-semibold mt-0.5 font-mono">
-                      {page.unit}
-                    </span>
-                  </div>
-
-                  {/* Bottom HUD controls */}
-                  <div className="pt-1.5 border-t border-white/10 flex justify-between items-center">
-                    <span className="font-mono text-[8.5px] text-neutral-400 font-medium font-mono">
-                      规格: {page.size} PX
-                    </span>
-                    <span className="font-mono text-[8.5px] text-[#2af0a3]/70 font-bold uppercase tracking-widest">
-                      STANDARDS_MOCKUP
-                    </span>
-                  </div>
-
-                </div>
               </div>
             );
           })}
@@ -244,75 +190,19 @@ export default function SodaShowcase() {
             </button>
 
             {/* Pure Visual Screen Container */}
-            <div className="w-full md:h-[82vh] bg-[#edf8f2] flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-[#cbe8d4] relative">
+            <div className="w-full md:h-[82vh] bg-[#edf8f2] flex items-center justify-center p-6 relative">
+              <div className="absolute inset-0 bg-[radial-gradient(#abdbbe_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none" />
+              <div 
+                className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-64 opacity-25 blur-[100px] pointer-events-none"
+                style={{ background: `radial-gradient(circle, ${activeLightboxPage.accent}30 0%, transparent 70%)` }}
+              />
               
-              {/* Left Side: The Image Canvas with interactive background */}
-              <div className="grow flex items-center justify-center p-6 relative bg-[#f1faf5]">
-                <div className="absolute inset-0 bg-[radial-gradient(#abdbbe_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none" />
-                <div 
-                  className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-64 opacity-25 blur-[100px] pointer-events-none"
-                  style={{ background: `radial-gradient(circle, ${activeLightboxPage.accent}30 0%, transparent 70%)` }}
-                />
-                
-                <img
-                  src={IMAGES.sodaPresets[activeLightboxPage.id - 1]}
-                  alt={activeLightboxPage.title}
-                  className="max-h-[45vh] md:max-h-[65vh] w-auto object-contain rounded-2xl border border-white/40 shadow-[0_25px_60px_-15px_rgba(20,60,40,0.25)] z-10"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-
-              {/* Right Side: The Swiss editorial panel describing design guidelines */}
-              <div className="w-full md:w-[360px] shrink-0 bg-white p-6 flex flex-col justify-between text-[#133022] z-10 relative">
-                <div className="space-y-6">
-                  {/* Top slide identifier */}
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-[10px] bg-[#ebfcf3] border border-[#beecd0] px-2.5 py-1 rounded-md text-[#1fa469] font-bold">
-                      PAGE_0{activeLightboxPage.id}
-                    </span>
-                    <span className="font-mono text-[9px] text-[#2af0a3] bg-[#133022] px-2 py-0.5 rounded uppercase tracking-widest font-bold font-mono">
-                      {activeLightboxPage.category.toUpperCase()}
-                    </span>
-                  </div>
-
-                  {/* Stat Display Box */}
-                  <div className="space-y-1 bg-[#f6fdf9] p-4 rounded-2xl border border-[#d0eed8]">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-black tracking-tight" style={{ color: activeLightboxPage.accent }}>
-                        {activeLightboxPage.stat}
-                      </span>
-                      <span className="font-mono text-xs text-[#3f5e4d] font-bold font-mono">{activeLightboxPage.unit}</span>
-                    </div>
-                    <p className="text-[10px] text-[#9dbfae] font-mono tracking-wider uppercase mt-1">CORE LISTEN KEYPOINT</p>
-                  </div>
-
-                  {/* Details text describing this specific mockup */}
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-bold text-[#133022] tracking-tight">{activeLightboxPage.title}</h3>
-                    <p className="text-xs text-[#527060] leading-relaxed font-normal">
-                      {activeLightboxPage.details}
-                    </p>
-                  </div>
-
-                  {/* Specification details */}
-                  <div className="space-y-2 pt-4 border-t border-[#e6f4eb] font-mono text-[10px] text-[#9dbfae]">
-                    <div className="flex justify-between">
-                      <span>画布比例</span>
-                      <span className="text-[#3f5e4d] font-semibold">16 : 9 (横屏)</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>建议规格</span>
-                      <span className="text-[#3f5e4d] font-semibold">{activeLightboxPage.size} PX</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-[#e6f4eb] flex items-center justify-between font-mono text-[9px] text-[#9dbfae] uppercase font-bold">
-                  <span>SYSTEM // STANDARD APPROVED</span>
-                  <span>SODA UX RESEARCH GROUP</span>
-                </div>
-              </div>
-
+              <img
+                src={IMAGES.sodaPresets[activeLightboxPage.id - 1]}
+                alt={activeLightboxPage.title}
+                className="max-h-[75vh] w-auto max-w-[90%] object-contain rounded-2xl border border-white/40 shadow-[0_25px_60px_-15px_rgba(20,60,40,0.25)] z-10"
+                referrerPolicy="no-referrer"
+              />
             </div>
 
           </div>

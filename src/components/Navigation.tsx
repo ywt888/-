@@ -48,7 +48,7 @@ export default function Navigation({ currentProjectId, onNavigateHome, onNavigat
               onClick={() => onNavigateSection('projects-section')}
               className="text-xs font-medium text-neutral-500 hover:text-black transition-colors cursor-pointer relative py-1"
             >
-              作品集群
+              项目展示
             </button>
 
             {/* WeChat/Contact quick CTA in corner */}

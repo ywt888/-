@@ -152,7 +152,7 @@ export default function App() {
                       03 // CORE SHOWCASES
                     </span>
                     <h2 className="text-3xl md:text-5xl font-extrabold text-black tracking-tight uppercase">
-                      作品集群
+                      项目展示
                     </h2>
                   </div>
                 </div>

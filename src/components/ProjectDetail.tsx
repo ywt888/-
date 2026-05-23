@@ -284,13 +284,13 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
             03 // CASE_STU_SHOWCASE
           </span>
           <h2 className={`text-2xl md:text-3xl font-extrabold ${titleClass} tracking-tight uppercase`}>
-            项目全景成果演示
+            项目展示
           </h2>
           <p className="text-sm text-neutral-500 font-mono mt-2 uppercase tracking-wide">
             {project.id === "krypton-debugger" 
               ? "15 CURATED DESIGN SLIDES WITH PRECISE RESOLUTIONS" 
               : project.id === "synapse-canvas" 
-                ? "32 CURATED SLIDES & 1 INTERACTIVE DEMO VIDEO" 
+                ? "32 CURATED DESIGN SAMPLES & CHANNELS PANORAMA" 
                 : "EXPLORING ALL 7 REVELATION SEGMENTS DESTRUCTURING"}
           </p>
         </div>
