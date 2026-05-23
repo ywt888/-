@@ -17,7 +17,7 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
           <img 
             src={IMAGES.douyinPresets[0]} 
             alt="抖音APP视频推荐" 
-            className="w-full h-full object-cover" 
+            className="w-full h-auto block" 
             referrerPolicy="no-referrer" 
           />
         );
@@ -27,7 +27,7 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
           <img 
             src={IMAGES.sodaPresets[0]} 
             alt="汽水音乐APP年度报告" 
-            className="w-full h-full object-cover" 
+            className="w-full h-auto block" 
             referrerPolicy="no-referrer" 
           />
         );
@@ -37,7 +37,7 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
           <img 
             src={IMAGES.sodaPresets[4]} 
             alt="Atla Systems" 
-            className="w-full h-full object-cover" 
+            className="w-full h-auto block" 
             referrerPolicy="no-referrer" 
           />
         );
@@ -57,8 +57,8 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
       className="group border border-neutral-100/80 hover:border-black rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 bg-white hover:shadow-lg flex flex-col justify-between animate-[fade-in_0.5s_ease-out]"
     >
       {/* Cover Image section containing custom mini-blueprints */}
-      <div className="h-64 overflow-hidden relative border-b border-neutral-100">
-        <div className="w-full h-full group-hover:scale-[1.03] transition-transform duration-500 ease-out">
+      <div className="relative border-b border-neutral-100 overflow-hidden">
+        <div className="w-full h-auto group-hover:scale-[1.03] transition-transform duration-500 ease-out">
           {renderMiniBlueprint()}
         </div>
         {/* Hover overlay link action indicator */}
