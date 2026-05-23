@@ -112,13 +112,13 @@ export default function DouyinShowcase() {
               <div
                 key={page.id}
                 onClick={() => setActiveLightboxPage(page)}
-                className={`group relative aspect-video border border-neutral-900 rounded-2xl bg-[#09090b] overflow-hidden cursor-pointer active:scale-[0.98] transition-all duration-300 hover:shadow-2xl ${cardBorderColor}`}
+                className={`group relative border border-neutral-900 rounded-2xl bg-[#09090b] overflow-hidden cursor-pointer active:scale-[0.98] transition-all duration-300 hover:shadow-2xl ${cardBorderColor}`}
               >
                 {/* Underlaid Mockup Design Image */}
                 <img 
                   src={IMAGES.douyinPresets[page.id - 1]} 
                   alt={page.title} 
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none"
+                  className="w-full h-auto block group-hover:scale-105 transition-transform duration-500 pointer-events-none"
                   referrerPolicy="no-referrer"
                 />
               </div>

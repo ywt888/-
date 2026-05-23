@@ -112,7 +112,7 @@ export default function SodaShowcase() {
               <div
                 key={page.id}
                 onClick={() => setActiveLightboxPage(page)}
-                className={`group relative aspect-video border transition-all duration-300 hover:shadow-2xl overflow-hidden cursor-pointer active:scale-[0.98] rounded-2xl bg-white flex flex-col justify-between ${
+                className={`group relative border transition-all duration-300 hover:shadow-2xl overflow-hidden cursor-pointer active:scale-[0.98] rounded-2xl bg-white flex flex-col justify-between ${
                   is15thPost 
                     ? 'border-[#ffc300] shadow-[0_4px_20px_rgba(255,195,0,0.15)] hover:border-[#ffd300]' 
                     : `border-[#d0eed8] ${cardBorderColor}`
@@ -123,7 +123,7 @@ export default function SodaShowcase() {
                 <img 
                   src={IMAGES.sodaPresets[page.id - 1]} 
                   alt={page.title} 
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none"
+                  className="w-full h-auto block group-hover:scale-105 transition-transform duration-500 pointer-events-none"
                   referrerPolicy="no-referrer"
                 />
               </div>
