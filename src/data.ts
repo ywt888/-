@@ -609,7 +609,7 @@ export const ARTICLES: Article[] = [
 ];
 
 export const IMAGES = {
-  founderPortrait: "/images/ywtzp.jpg",
+  founderPortrait: "/images/ywtzzp.png",
   // List of high-fidelity Unsplash mockups that match each slide perfectly
   douyinPresets: [
     "/images/project1-1.png",
