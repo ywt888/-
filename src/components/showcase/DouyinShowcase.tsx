@@ -102,7 +102,7 @@ export default function DouyinShowcase() {
         </div>
 
         {/* 32 cards grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-8 max-w-4xl mx-auto">
           {filteredPages.map((page) => {
             const cardBorderColor = page.id % 2 === 0 
               ? 'hover:border-[#fe2c55]' 
@@ -173,29 +173,29 @@ export default function DouyinShowcase() {
 
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl bg-neutral-950 border border-neutral-800 rounded-3xl flex flex-col shadow-2xl overflow-hidden max-h-[92vh] cursor-default"
+            className="relative w-full max-w-7xl lg:max-w-[94vw] bg-neutral-950 border border-neutral-800 rounded-3xl flex flex-col shadow-2xl overflow-hidden max-h-[96vh] cursor-default"
           >
             
             {/* Close trigger button */}
             <button
               onClick={() => setActiveLightboxPage(null)}
-              className="absolute right-5 top-5 z-30 p-2 bg-neutral-900/80 hover:bg-neutral-800 text-neutral-400 hover:text-white rounded-full transition-all cursor-pointer border border-neutral-800"
+              className="absolute right-5 top-5 z-30 p-2.5 bg-neutral-900/90 hover:bg-neutral-800 text-neutral-400 hover:text-white rounded-full transition-all cursor-pointer border border-neutral-800 shadow-lg"
             >
-              <Minimize2 className="w-4 h-4" />
+              <Minimize2 className="w-5 h-5" />
             </button>
 
             {/* Pure Visual Screen Container */}
-            <div className="w-full md:h-[82vh] bg-[#050508] flex items-center justify-center p-6 relative">
+            <div className="w-full h-auto min-h-[50vh] md:h-[90vh] bg-[#050508] flex items-center justify-center p-4 relative">
               <div className="absolute inset-0 bg-[radial-gradient(#222_1px,transparent_1px)] [background-size:16px_16px] opacity-35 pointer-events-none" />
               <div 
-                className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-64 opacity-25 blur-[100px] pointer-events-none"
-                style={{ background: `radial-gradient(circle, ${activeLightboxPage.accent}30 0%, transparent 70%)` }}
+                className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-80 opacity-30 blur-[120px] pointer-events-none"
+                style={{ background: `radial-gradient(circle, ${activeLightboxPage.accent}40 0%, transparent 70%)` }}
               />
               
               <img
                 src={IMAGES.douyinPresets[activeLightboxPage.id - 1]}
                 alt={activeLightboxPage.title}
-                className="max-h-[75vh] w-auto max-w-[90%] object-contain rounded-2xl border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] z-10 transition-transform duration-300"
+                className="max-h-[86vh] w-auto max-w-[98%] object-contain rounded-2xl border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] z-10 transition-transform duration-300 hover:scale-[1.01]"
                 referrerPolicy="no-referrer"
               />
             </div>

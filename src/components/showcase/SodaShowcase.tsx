@@ -98,7 +98,7 @@ export default function SodaShowcase() {
         </div>
 
         {/* 15 cards grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-8 max-w-4xl mx-auto">
           {filteredPages.map((page) => {
             const is15thPost = page.id === 15;
             
@@ -178,29 +178,29 @@ export default function SodaShowcase() {
 
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl bg-white border border-[#beecd0] rounded-3xl flex flex-col shadow-2xl overflow-hidden text-[#133022] max-h-[92vh] cursor-default"
+            className="relative w-full max-w-7xl lg:max-w-[94vw] bg-white border border-[#beecd0] rounded-3xl flex flex-col shadow-2xl overflow-hidden text-[#133022] max-h-[96vh] cursor-default"
           >
             
             {/* Close trigger button */}
             <button
               onClick={() => setActiveLightboxPage(null)}
-              className="absolute right-5 top-5 z-30 p-2 bg-white hover:bg-[#ebfcf3] text-[#1fa469] hover:text-[#0b4a2d] rounded-full transition-all cursor-pointer border border-[#beecd0]"
+              className="absolute right-5 top-5 z-30 p-2.5 bg-white hover:bg-[#ebfcf3] text-[#1fa469] hover:text-[#0b4a2d] rounded-full transition-all cursor-pointer border border-[#beecd0] shadow-md"
             >
-              <Minimize2 className="w-4 h-4" />
+              <Minimize2 className="w-5 h-5" />
             </button>
 
             {/* Pure Visual Screen Container */}
-            <div className="w-full md:h-[82vh] bg-[#edf8f2] flex items-center justify-center p-6 relative">
+            <div className="w-full h-auto min-h-[50vh] md:h-[90vh] bg-[#edf8f2] flex items-center justify-center p-4 relative">
               <div className="absolute inset-0 bg-[radial-gradient(#abdbbe_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none" />
               <div 
-                className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-64 opacity-25 blur-[100px] pointer-events-none"
-                style={{ background: `radial-gradient(circle, ${activeLightboxPage.accent}30 0%, transparent 70%)` }}
+                className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-80 opacity-30 blur-[120px] pointer-events-none"
+                style={{ background: `radial-gradient(circle, ${activeLightboxPage.accent}40 0%, transparent 70%)` }}
               />
               
               <img
                 src={IMAGES.sodaPresets[activeLightboxPage.id - 1]}
                 alt={activeLightboxPage.title}
-                className="max-h-[75vh] w-auto max-w-[90%] object-contain rounded-2xl border border-white/40 shadow-[0_25px_60px_-15px_rgba(20,60,40,0.25)] z-10"
+                className="max-h-[86vh] w-auto max-w-[98%] object-contain rounded-2xl border border-white/40 shadow-[0_25px_60px_-15px_rgba(20,60,40,0.3)] z-10 transition-transform duration-300 hover:scale-[1.01]"
                 referrerPolicy="no-referrer"
               />
             </div>
