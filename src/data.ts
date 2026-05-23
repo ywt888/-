@@ -612,7 +612,7 @@ export const IMAGES = {
   founderPortrait: "/src/assets/images/founder_portrait_1779277018368.png",
   // List of high-fidelity Unsplash mockups that match each slide perfectly
   douyinPresets: [
-    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+    "/images/project1-6.png",
     "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80",
     "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80",
     "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
